@@ -17,8 +17,9 @@ class _PeopleHomeState extends State<PeopleHome> {
       appBar: AppBar(
         title: Text("Person Details",style: TextStyle(fontSize: 25,color: Colors.white),),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xffa2d2ff),
       ),
+      backgroundColor: Color(0xffa2d2ff),
       body: FutureBuilder<PeopleModel?>(
         future: UserServices().fetchPeopleData(20),
         builder: (context, snapshot) {
@@ -32,7 +33,7 @@ class _PeopleHomeState extends State<PeopleHome> {
             return  GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.4,
+                childAspectRatio: 0.65,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
               ),
@@ -55,10 +56,10 @@ class _PeopleHomeState extends State<PeopleHome> {
                       children: [
                         Container(
                           margin: EdgeInsets.all(10),
-                          height: MediaQuery.of(context).size.height*0.3,
-                          width: double.infinity,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(40),
                             image: DecorationImage(image: NetworkImage(person.picture?.thumbnail??''),fit: BoxFit.cover),
                           ),
                         ),
@@ -68,8 +69,29 @@ class _PeopleHomeState extends State<PeopleHome> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('${person.name?.first} ${person.name?.last}',style: myStyle(18,Colors.black,FontWeight.bold),),
-                              Text(person.email ?? ''),
-                              Text(locationDetails),
+                              Row(
+                                children: [
+                                  Icon(Icons.email_rounded,color: Colors.blue,size: 23,),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.3,
+                                    child: Text(
+                                      person.email != null && person.email!.length > 20
+                                          ? '${person.email!.substring(0, 20)}...'
+                                          : person.email ?? 'No email',
+                                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on,color: Colors.blue,size: 23,),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width*0.3,
+                                      child: Text(locationDetails)),
+                                ],
+                              ),
                               Gap(5),
                               Row(
                                 children: [
