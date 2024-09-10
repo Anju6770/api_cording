@@ -1,7 +1,9 @@
 import 'package:api_cording/controller/wallpaper_services.dart';
 import 'package:api_cording/model/wallpaper.dart';
+import 'package:api_cording/pages/wall_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 class WallHome extends StatefulWidget {
   const WallHome({super.key});
 
@@ -80,13 +82,18 @@ class _WallHomeState extends State<WallHome> {
               crossAxisCount: 2,
               itemBuilder: (context,index){
                 final photo = snapshot.data![index];
-                return Container(
-                  height: (index % 3 + 2)*100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color(int.parse(photo.avg.replaceAll("#", "0xff"))),
-                    image: DecorationImage(
-                        image: NetworkImage("${photo.image}"),fit: BoxFit.cover)
+                return InkWell(
+                  onTap: (){
+                    Get.to(WallDetails(image: photo.image,name: photo.photo,alt: photo.late,));
+                  },
+                  child: Container(
+                    height: (index % 3 + 2)*100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Color(int.parse(photo.avg.replaceAll("#", "0xff"))),
+                      image: DecorationImage(
+                          image: NetworkImage("${photo.image}"),fit: BoxFit.cover)
+                    ),
                   ),
                 );
               }
