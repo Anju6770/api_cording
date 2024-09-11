@@ -1,5 +1,6 @@
 import 'package:api_cording/controller/wallpaper_services.dart';
 import 'package:api_cording/model/wallpaper.dart';
+import 'package:api_cording/pages/search.dart';
 import 'package:api_cording/pages/wall_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -33,6 +34,28 @@ class _WallHomeState extends State<WallHome> {
     ),
   ];
 
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = "";
+  bool searchMode = false;
+
+
+  SearchService _searchService = SearchService();
+
+
+  void searchImages(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+      searchMode = true;
+    });
+  }
+
+
+  void resetSearch() {
+    setState(() {
+      searchMode = false;
+      _searchController.clear();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -57,8 +80,45 @@ class _WallHomeState extends State<WallHome> {
           ),
         ),
         backgroundColor: Colors.black,
-        body: TabBarView(
-          children: cats.map((tab) => customGridView(tab)).toList(),
+        body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: "Search wallpapers...",
+                    hintStyle: TextStyle(color: Colors.black),
+                    prefixIcon: Icon(Icons.search, color: Colors.black),
+                    disabledBorder: InputBorder.none ,
+                    suffixIcon: searchMode
+                        ? IconButton(
+                      icon: Icon(Icons.close, color: Colors.white),
+                      onPressed: resetSearch, // Clear search
+                    )
+                        : null,
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.black
+                  ),
+                  onSubmitted: (value) {
+                    searchImages(value); // Trigger search on input
+                  },
+                ),
+              ),
+              Expanded(
+                child: searchMode
+                    ? SearchResults(_searchQuery) // Show search results
+                    : TabBarView(
+                  children: cats.map((tab) => customGridView(tab)).toList(),
+                ),
+
+              ),
+            ]
         )
       ),
     );

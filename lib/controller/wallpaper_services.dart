@@ -25,5 +25,8 @@ class WallpaperServices{
       throw Exception('Could not launch $_url');
     }
   }
-
 }
+class SearchService {
+  Future<List<Wallpaper>> fetchWallpapersByQuery(String query) async {
+    return await WallpaperServices().fatchNature(query);
+  }}
