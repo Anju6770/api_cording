@@ -1,5 +1,6 @@
 import 'package:api_cording/controller/wallpaper_services.dart';
 import 'package:api_cording/model/wallpaper.dart';
+import 'package:api_cording/pages/wall_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,7 @@ class SearchResults extends StatelessWidget {
                   tag: "${photos.image}",
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed("/details", arguments: photos);
+                      Get.to(WallDetails(image: photos.image,name: photos.photo,alt: photos.late,));
                     },
                     child: Container(
                       margin: EdgeInsets.all(10),

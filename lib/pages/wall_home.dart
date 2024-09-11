@@ -5,6 +5,7 @@ import 'package:api_cording/pages/wall_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+
 class WallHome extends StatefulWidget {
   const WallHome({super.key});
 
@@ -38,9 +39,7 @@ class _WallHomeState extends State<WallHome> {
   String _searchQuery = "";
   bool searchMode = false;
 
-
   SearchService _searchService = SearchService();
-
 
   void searchImages(String query) {
     setState(() {
@@ -49,28 +48,38 @@ class _WallHomeState extends State<WallHome> {
     });
   }
 
-
   void resetSearch() {
     setState(() {
       searchMode = false;
       _searchController.clear();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Wallpics",style: TextStyle(fontSize: 25,color: Colors.white),),
+          leading: searchMode
+              ? IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: resetSearch,
+          )
+              : null,
+          title: Text(
+            "Wallpics",
+            style: TextStyle(fontSize: 25, color: Colors.white),
+          ),
           centerTitle: true,
           backgroundColor: Colors.black,
-          bottom: TabBar(
+          bottom: searchMode
+              ? null
+              : TabBar(
             tabs: cats,
             indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.yellow
-            ),
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.yellow),
             unselectedLabelColor: Colors.white,
             isScrollable: true,
             indicatorWeight: 1,
@@ -80,46 +89,42 @@ class _WallHomeState extends State<WallHome> {
           ),
         ),
         backgroundColor: Colors.black,
-        body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: "Search wallpapers...",
-                    hintStyle: TextStyle(color: Colors.black),
-                    prefixIcon: Icon(Icons.search, color: Colors.black),
-                    disabledBorder: InputBorder.none ,
-                    suffixIcon: searchMode
-                        ? IconButton(
-                      icon: Icon(Icons.close, color: Colors.white),
-                      onPressed: resetSearch, // Clear search
-                    )
-                        : null,
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  style: TextStyle(color: Colors.black
-                  ),
-                  onSubmitted: (value) {
-                    searchImages(value); // Trigger search on input
-                  },
+        body: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: "Search wallpapers...",
+                hintStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(Icons.search, color: Colors.black),
+                disabledBorder: InputBorder.none,
+                suffixIcon: searchMode
+                    ? IconButton(
+                  icon: Icon(Icons.close, color: Colors.white),
+                  onPressed: resetSearch, // Clear search
+                )
+                    : null,
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              Expanded(
-                child: searchMode
-                    ? SearchResults(_searchQuery) // Show search results
-                    : TabBarView(
-                  children: cats.map((tab) => customGridView(tab)).toList(),
-                ),
-
-              ),
-            ]
-        )
+              style: TextStyle(color: Colors.black),
+              onSubmitted: (value) {
+                searchImages(value);
+              },
+            ),
+          ),
+          Expanded(
+            child: searchMode
+                ? SearchResults(_searchQuery) // Show search results
+                : TabBarView(
+              children: cats.map((tab) => customGridView(tab)).toList(),
+            ), // Show TabBar content
+          ),
+        ]),
       ),
     );
   }
@@ -127,40 +132,42 @@ class _WallHomeState extends State<WallHome> {
   FutureBuilder<List<Wallpaper>> customGridView(Tab tab) {
     return FutureBuilder<List<Wallpaper>>(
       future: WallpaperServices().fatchNature(tab.text!.toLowerCase()),
-      builder: (context,snapshot){
-        if (snapshot.connectionState == ConnectionState.waiting){
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
-        }
-        else if (!snapshot.hasData || snapshot.data == null){
+        } else if (!snapshot.hasData || snapshot.data == null) {
           return Center(child: Text("No Data Found"));
-        }
-        else {
+        } else {
           return MasonryGridView.count(
-            crossAxisSpacing: 5,
+              crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-               itemCount: snapshot.data!.length,
+              itemCount: snapshot.data!.length,
               crossAxisCount: 2,
-              itemBuilder: (context,index){
+              itemBuilder: (context, index) {
                 final photo = snapshot.data![index];
                 return InkWell(
-                  onTap: (){
-                    Get.to(WallDetails(image: photo.image,name: photo.photo,alt: photo.late,));
+                  onTap: () {
+                    Get.to(WallDetails(
+                      image: photo.image,
+                      name: photo.photo,
+                      alt: photo.late,
+                    ));
                   },
                   child: Hero(
                     tag: photo.image,
                     child: Container(
-                      height: (index % 3 + 2)*100,
+                      height: (index % 3 + 2) * 100,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Color(int.parse(photo.avg.replaceAll("#", "0xff"))),
-                        image: DecorationImage(
-                            image: NetworkImage("${photo.image}"),fit: BoxFit.cover)
-                      ),
+                          borderRadius: BorderRadius.circular(30),
+                          color: Color(int.parse(
+                              photo.avg.replaceAll("#", "0xff"))),
+                          image: DecorationImage(
+                              image: NetworkImage("${photo.image}"),
+                              fit: BoxFit.cover)),
                     ),
                   ),
                 );
-              }
-              );
+              });
         }
       },
     );
