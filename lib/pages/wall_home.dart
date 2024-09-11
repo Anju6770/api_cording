@@ -17,7 +17,7 @@ class _WallHomeState extends State<WallHome> {
       text: "NATURE",
     ),
     Tab(
-      text: "ANIME",
+      text: "ANIMAL",
     ),
     Tab(
       text: "SPORTS",
@@ -26,7 +26,7 @@ class _WallHomeState extends State<WallHome> {
       text: "CARS",
     ),
     Tab(
-      text: "MANGA",
+      text: "FLOWER",
     ),
     Tab(
       text: "HOUSE",
@@ -86,13 +86,16 @@ class _WallHomeState extends State<WallHome> {
                   onTap: (){
                     Get.to(WallDetails(image: photo.image,name: photo.photo,alt: photo.late,));
                   },
-                  child: Container(
-                    height: (index % 3 + 2)*100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Color(int.parse(photo.avg.replaceAll("#", "0xff"))),
-                      image: DecorationImage(
-                          image: NetworkImage("${photo.image}"),fit: BoxFit.cover)
+                  child: Hero(
+                    tag: photo.image,
+                    child: Container(
+                      height: (index % 3 + 2)*100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Color(int.parse(photo.avg.replaceAll("#", "0xff"))),
+                        image: DecorationImage(
+                            image: NetworkImage("${photo.image}"),fit: BoxFit.cover)
+                      ),
                     ),
                   ),
                 );

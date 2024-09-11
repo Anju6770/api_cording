@@ -1,3 +1,5 @@
+import 'package:api_cording/controller/wallpaper_services.dart';
+import 'package:api_cording/pages/full_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,7 @@ class WallDetails extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Wallpics',style: TextStyle(color: Colors.white,fontSize: 25),),
+        title: Text('Details',style: TextStyle(color: Colors.white,fontSize: 25),),
         backgroundColor: Colors.black,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios,color: Colors.white,),
@@ -24,28 +26,36 @@ class WallDetails extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children:[ Container(
-                height: MediaQuery.of(context).size.height*0.6,
-                width: double.infinity,
-                decoration:BoxDecoration(
-                    image: DecorationImage(image: NetworkImage(image),fit: BoxFit.cover)
+            Hero(
+              tag: image,
+              child: Stack(
+                children:[ Container(
+                  height: MediaQuery.of(context).size.height*0.6,
+                  width: double.infinity,
+                  decoration:BoxDecoration(
+                      image: DecorationImage(image: NetworkImage(image),fit: BoxFit.cover)
+                  ),
                 ),
+                  Positioned(
+                    right: 6,
+                      top: 6,
+                      child: GestureDetector(
+                        onTap: (){
+                          Get.to(FullImage(image: image,alt: alt,));
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue.withOpacity(0.7),
+                          ),
+                          child: Icon(Icons.fullscreen,color: Colors.white,),
+                        ),
+                      )
+                  )
+                ]
               ),
-                Positioned(
-                  right: 6,
-                    top: 6,
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue.withOpacity(0.7),
-                      ),
-                      child: Icon(Icons.fullscreen,color: Colors.white,),
-                    )
-                )
-              ]
             ),
             Gap(10),
             Padding(
@@ -99,6 +109,17 @@ class WallDetails extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            MaterialButton(
+              color: Colors.white,
+              onPressed: (){
+                WallpaperServices().open(image);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text("DOWNLOAD", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),),      Icon(Icons.download, color: Colors.black,size: 30,)
+              ],  ),
             ),
           ],
         ),

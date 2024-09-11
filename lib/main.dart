@@ -1,5 +1,6 @@
 import 'package:api_cording/pages/home.dart';
 import 'package:api_cording/pages/people_home.dart';
+import 'package:api_cording/pages/splish.dart';
 import 'package:api_cording/pages/wall_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,9 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/splish',
       getPages: [
         GetPage(name: '/home', page: ()=> WallHome()),
+        GetPage(name: '/people', page: ()=> PeopleHome()),
+        GetPage(name: '/splish', page: ()=> SplashScreen()),
       ],
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
