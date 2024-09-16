@@ -1,3 +1,4 @@
+import 'package:api_cording/Constant/constants.dart';
 import 'package:api_cording/controller/wallpaper_services.dart';
 import 'package:api_cording/model/wallpaper.dart';
 import 'package:api_cording/pages/search.dart';
@@ -64,12 +65,13 @@ class _WallHomeState extends State<WallHome> {
           leading: searchMode
               ? IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-            onPressed: resetSearch,
+            onPressed:resetSearch
+
           )
               : null,
           title: Text(
             "Wallpics",
-            style: TextStyle(fontSize: 25, color: Colors.white),
+            style: mystyle(25, Colors.white),
           ),
           centerTitle: true,
           backgroundColor: Colors.black,
