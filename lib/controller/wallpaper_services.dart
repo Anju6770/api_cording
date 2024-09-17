@@ -8,7 +8,7 @@ class WallpaperServices{
 
  Future<List<Wallpaper>> fatchNature(String cats) async {
     try{
-      final image = "${_base}search?query=${cats}&per_page=20";
+      final image = "${_base}search?query=${cats}&per_page=200";
       final response = await http.get(Uri.parse(image),headers: {'Authorization':_key});
       final allData = jsonDecode(response.body);
       final List data = allData['photos'];
