@@ -17,22 +17,22 @@ class WallHome extends StatefulWidget {
 class _WallHomeState extends State<WallHome> {
   List<Tab> cats = [
     Tab(
-      text: "NATURE",
+      text: "SUN RISE",
     ),
     Tab(
-      text: "ANIMAL",
+      text: "BIKES",
     ),
     Tab(
-      text: "SPORTS",
+      text: "MOUNTAINS",
     ),
     Tab(
-      text: "CARS",
+      text: "SNOW",
     ),
     Tab(
-      text: "FLOWER",
+      text: "ISLAND",
     ),
     Tab(
-      text: "HOUSE",
+      text: "LIONS",
     ),
   ];
 
