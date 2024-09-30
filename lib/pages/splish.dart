@@ -27,8 +27,22 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child:Column(
           children: [
-            Image(image: AssetImage("assets/image/sp.jpg")),
-            CircularProgressIndicator(),
+            Container(
+                height: MediaQuery.of(context).size.height*0.99,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage("assets/image/sp.jpg"),fit: BoxFit.cover,)
+                ),
+              child:Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator()),
+                ],
+              ),
+                ),
           ],
         ),
       ),
